@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scittle@0.6.15/dist/scittle.js" type="application/javascript"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-4 font-mono">Base64 Converter</h1>
+        <textarea id="inputText" class="w-full px-3 py-2 mb-4 border rounded font-mono" rows="5" placeholder="Enter text..."></textarea>
+        <div class="flex items-center justify-between mb-4">
+            <button id="encodeBtn" class="btn btn-primary btn-wide font-mono text-lg">Encode</button>
+            <button id="decodeBtn" class="btn btn-primary btn-wide font-mono text-lg">Decode</button>
+        </div>
+        <textarea id="outputText" class="w-full px-3 py-2 mb-4 border rounded font-mono" rows="5" placeholder="Result..." readonly></textarea>
+        <p class="text-sm text-gray-500">Note: Click 'Encode' to convert text to Base64 and 'Decode' to convert Base64 to text.</p>
+    </div>
+
+    <div id="bottom-toast" class="toast hidden">
+      <div class="alert alert-info">
+        <span>Copied</span>
+      </div>
+    </div>
+
+    <script type="application/x-scittle">
+        (defn encode-text []
+            (let [input-text (-> (.getElementById js/document "inputText") .-value)
+                  encoded-text (js/btoa input-text)]
+                 (set! (.-value (.getElementById js/document "outputText")) encoded-text)))
+
+        (defn decode-text []
+           (let [input-text (-> (.getElementById js/document "inputText") .-value)
+                 decoded-text (js/atob input-text)]
+                (set! (.-value (.getElementById js/document "outputText")) decoded-text)))
+
+        (defn delay-toast [elm]
+            (.add elm.classList "hidden"))
+
+        (defn copy-decode-text []
+           (let [output-text (.-value (.getElementById js/document "outputText"))
+                 toast (.getElementById js/document "bottom-toast")]
+               (when (not= "" output-text)
+                   (.writeText js/navigator.clipboard output-text)
+                   (.remove toast.classList "hidden")
+                   (js/setTimeout (fn [elm] (.add elm.classList "hidden")) 3000 toast))))
+
+        (.addEventListener (.getElementById js/document "encodeBtn") "click" encode-text)
+        (.addEventListener (.getElementById js/document "decodeBtn") "click" decode-text)
+        (.addEventListener (.getElementById js/document "outputText") "click" copy-decode-text)
+    </script>
+  </body>
+</html>
