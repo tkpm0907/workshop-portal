@@ -1,9 +1,5 @@
-# This is a basic workflow that is manually triggered
-
 name: gh-pages-deploy
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
 on:
   push:
     branches:
@@ -12,18 +8,13 @@ on:
 
 permissions:
   contents: read
-  pages: write      # to deploy to Pages
-  id-token: write 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  pages: write
+  id-token: write
+  
 jobs:
-  # This workflow contains a single job called "greet"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
       - uses: actions/checkout@v4
       - name: Generate index.html
         run: |
@@ -38,10 +29,9 @@ jobs:
           echo "  <h1>รายการไฟล์</h1>" >> index.html
           echo "  <ul>" >> index.html
           ls -1tr ${{ github.workspace }}/pages/* | while read file; do
-            file_name=$(basename "$file")
+            file_name="/pages/$file"
             file_date=$(git log -1 --format="%cI" "$file")
-            file_time=$(git log -1 --format="%cI" "$file" | cut -d' ' -f2)
-            echo "    <li><a href=\"$file\">$file_name</a> ($file_date $file_time)</li>" >> index.html
+            echo "    <li><a href=\"$file\">$file_name</a> ($file_date)</li>" >> index.html
           done
           echo "  </ul>" >> index.html
           echo "</body>" >> index.html
