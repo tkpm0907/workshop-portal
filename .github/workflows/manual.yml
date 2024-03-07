@@ -28,7 +28,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-      - uses: actions/checkout@vภ
+      - uses: actions/checkout@v4
       - name: Generate index.html
         run: |
           echo "<!DOCTYPE html>" > index.html
