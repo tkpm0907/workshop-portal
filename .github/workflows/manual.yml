@@ -13,6 +13,9 @@ on:
 jobs:
   # This workflow contains a single job called "greet"
   gh-pages-deploy:
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write 
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -42,8 +45,7 @@ jobs:
           echo "</body>" >> index.html
           echo "</html>" >> index.html
       - name: Deploy to Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
         with:
-          github-token: ${{ secrets.KEY }}
-          source: ./pages
+          token: ${{ secrets.KEY }}
           branch: gh-pages
