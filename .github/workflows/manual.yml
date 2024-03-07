@@ -31,7 +31,7 @@ jobs:
           ls -1tr ${{ github.workspace }}/pages/* | while read file; do
             file_name=$(basename "$file")
             file_date=$(git log -1 --format="%cI" "$file")
-            echo "    <li><a href=\"pages/$file\">$file_name</a> ($file_date)</li>" >> index.html
+            echo "    <li><a href=\"pages/$file_name\">$file_name</a> ($file_date)</li>" >> index.html
           done
           echo "  </ul>" >> index.html
           echo "</body>" >> index.html
