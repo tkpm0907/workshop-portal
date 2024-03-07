@@ -44,6 +44,6 @@ jobs:
       - name: Deploy to Pages
         uses: actions/deploy-pages@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.KEY }}
           source: ./pages
           branch: gh-pages
