@@ -29,9 +29,9 @@ jobs:
           echo "  <h1>รายการไฟล์</h1>" >> index.html
           echo "  <ul>" >> index.html
           ls -1tr ${{ github.workspace }}/pages/* | while read file; do
-            file_name="/pages/$file"
+            file_name=$(basename "$file")
             file_date=$(git log -1 --format="%cI" "$file")
-            echo "    <li><a href=\"$file\">$file_name</a> ($file_date)</li>" >> index.html
+            echo "    <li><a href=\"pages/$file\">$file_name</a> ($file_date)</li>" >> index.html
           done
           echo "  </ul>" >> index.html
           echo "</body>" >> index.html
