@@ -17,11 +17,7 @@ permissions:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
-  gh-pages-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -41,7 +37,7 @@ jobs:
           echo "<body>" >> index.html
           echo "  <h1>รายการไฟล์</h1>" >> index.html
           echo "  <ul>" >> index.html
-          ls -1 pages/* | sort -r | while read file; do
+          ls -1tr ${{ github.workspace }}/pages/* | while read file; do
             file_name=$(basename "$file")
             file_date=$(git log -1 --format="%cI" "$file")
             file_time=$(git log -1 --format="%cI" "$file" | cut -d' ' -f2)
@@ -57,6 +53,13 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to Pages
         id: deployment
         uses: actions/deploy-pages@v4
