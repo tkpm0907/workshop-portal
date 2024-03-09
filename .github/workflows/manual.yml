@@ -34,6 +34,7 @@ jobs:
             echo "    <li><a href=\"pages/$file_name\">$file_name</a> ($file_date)</li>" >> index.html
           done
           echo "  </ul>" >> index.html
+          echo $PWD >> index.html
           echo "</body>" >> index.html
           echo "</html>" >> index.html
       - name: Setup Pages
